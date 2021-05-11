@@ -15,20 +15,13 @@ module FileSync
     end
 
     def fetch
-      p '==========================='
-      p '......Fetching files.......'
-      p '==========================='
-      @fns.each_with_index { |fn, index| p "#{index + 1}.filename: #{fn}" }
-      p '==========================='
+      p 'Fetching files...'
+      @fns.each_with_index { |fn, index| p "#{index + 1}.file: #{fn}" }
     end
 
     def compare_sync
       p 'Comparing files, please wait..'
-      p '==========================='
-      puts
-
       dot_dir = %(../dotfiles/)
-
       @fns.each do |f|
         if FileUtils.identical?("#{dot_dir}#{f}", "#{ENV['HOME']}/#{f}")
           p "#{f} is already up to date, ignored."
