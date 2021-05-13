@@ -21,22 +21,26 @@ module FileSync
       @fname.each_with_index { |fname, index| p "#{index + 1}.file: #{fname}" }
     end
 
-    def compare_sync
-      p 'Comparing files, please wait..'
+    def compare
+      p 'ACTUALLY comparing files!!!'
       dot_dir = %(../dotfiles/)
-      @fname.each do |f|
-        if FileUtils.identical?("#{dot_dir}#{f}", "#{ENV['HOME']}/#{f}")
-          p "#{f} is already up to date, ignored."
+      @fname.each do |file|
+        if FileUtils.identical?("#{dot_dir}#{file}", "#{ENV['HOME']}/#{file}")
+          p "#{file} is already up to date!"
         else
-          p "#{f} is syncing..."
-          cmd = "cp ~/#{f} ."
-          output = `#{cmd}`
+          sync(file)
         end
       end
     end
 
+    def sync(file)
+      p "#{file} is syncing..."
+      cmd = "cp ~/#{file} ."
+      output = `#{cmd}`
+    end
+
     fo = File.new('.vimrc', '.zshrc', '.tmux.conf')
     fo.fetch
-    fo.compare_sync
+    fo.compare
   end
 end
