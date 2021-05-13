@@ -10,19 +10,21 @@ module FileSync
 
   # Class to detect files and sync them.
   class File
-    def initialize(*fns)
-      @fns = fns
+    attr_accessor :fname
+
+    def initialize(*fname)
+      @fname = fname
     end
 
     def fetch
       p 'Fetching files...'
-      @fns.each_with_index { |fn, index| p "#{index + 1}.file: #{fn}" }
+      @fname.each_with_index { |fname, index| p "#{index + 1}.file: #{fname}" }
     end
 
     def compare_sync
       p 'Comparing files, please wait..'
       dot_dir = %(../dotfiles/)
-      @fns.each do |f|
+      @fname.each do |f|
         if FileUtils.identical?("#{dot_dir}#{f}", "#{ENV['HOME']}/#{f}")
           p "#{f} is already up to date, ignored."
         else
@@ -33,8 +35,8 @@ module FileSync
       end
     end
 
-    fns = File.new('.vimrc', '.zshrc', '.tmux.conf')
-    fns.fetch
-    fns.compare_sync
+    fo = File.new('.vimrc', '.zshrc', '.tmux.conf')
+    fo.fetch
+    fo.compare_sync
   end
 end
