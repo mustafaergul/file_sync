@@ -14,6 +14,7 @@ module FileSync
 
     def initialize(*fname)
       @fname = fname
+      @dot_dir = %(dotfiles/)
     end
 
     def fetch
@@ -22,10 +23,9 @@ module FileSync
     end
 
     def compare
-      p 'ACTUALLY comparing files!!!'
-      dot_dir = %(../dotfiles/)
+      p 'Comparing files....'
       @fname.each do |file|
-        if FileUtils.identical?("#{dot_dir}#{file}", "#{ENV['HOME']}/#{file}")
+        if FileUtils.identical?("#{ENV['HOME']}/Projects/#{@dot_dir}#{file}", "#{ENV['HOME']}/#{file}")
           p "#{file} is already up to date!"
         else
           sync(file)
@@ -35,7 +35,7 @@ module FileSync
 
     def sync(file)
       p "#{file} is syncing..."
-      cmd = "cp ~/#{file} ."
+      cmd = "cp ~/#{file} #{ENV['HOME']}/Projects/#{@dot_dir}"
       output = `#{cmd}`
     end
 
