@@ -1,15 +1,17 @@
-#!/usr/bin/ruby
+# !/usr/bin/ruby
 # frozen_string_literal: true
 
-# Script that will sync configuration files.
+# Ruby script that will sync dotfiles configuration
 
 require 'fileutils'
+require 'yaml'
 
+# Functionality of syncing specific files
 module FileSync
   class Error < StandardError; end
 
   # Class to detect files and sync them.
-  class File
+  class MyConfig
     attr_accessor :fname
 
     def initialize(*fname)
@@ -18,29 +20,35 @@ module FileSync
     end
 
     def fetch
-      p 'Fetching files...'
-      @fname.each_with_index { |fname, index| p "#{index + 1}.file: #{fname}" }
+      puts 'Fetching files...'
+      @fname.each_with_index { |fname, index| puts "#{index + 1}.file: #{fname}" }
     end
 
     def compare
-      p 'Comparing files....'
+      puts 'Comparing files....'
       @fname.each do |file|
         if FileUtils.identical?("#{ENV['HOME']}/Projects/#{@dot_dir}#{file}", "#{ENV['HOME']}/#{file}")
-          p "#{file} is already up to date!"
+          puts "#{file} is already up to date!"
         else
           sync(file)
         end
       end
+      puts
     end
 
     def sync(file)
-      p "#{file} is syncing..."
+      puts "#{file} is syncing..."
       cmd = "cp ~/#{file} #{ENV['HOME']}/Projects/#{@dot_dir}"
-      output = `#{cmd}`
+      exec(cmd)
+      puts
     end
+  end
 
-    fo = File.new('.vimrc', '.zshrc', '.tmux.conf')
-    fo.fetch
-    fo.compare
+  file_payload = YAML.load_file('./config/filenames.yml')
+
+  file_payload.values.flatten.map do |v|
+    pay = MyConfig.new(v)
+    pay.fetch
+    pay.compare
   end
 end
