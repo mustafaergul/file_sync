@@ -47,8 +47,8 @@ module FileSync
   file_payload = YAML.load_file('./config/filenames.yml')
 
   file_payload.values.flatten.map do |v|
-    pay = MyConfig.new(v)
-    pay.fetch
-    pay.compare
+    file = MyConfig.new(v)
+    file.fetch
+    file.compare
   end
 end
