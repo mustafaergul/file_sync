@@ -10,7 +10,7 @@ require 'yaml'
 module FileSync
   class Error < StandardError; end
 
-  # Class to detect files and sync them.
+  # Class to manage files
   class MyConfig
     attr_accessor :fname
 
@@ -44,9 +44,9 @@ module FileSync
     end
   end
 
-  file_payload = YAML.load_file('./config/filenames.yml')
+  files_payload = YAML.load_file('./config/filenames.yml')
 
-  file_payload.values.flatten.map do |v|
+  files_payload.values.flatten.map do |v|
     file = MyConfig.new(v)
     file.fetch
     file.compare
