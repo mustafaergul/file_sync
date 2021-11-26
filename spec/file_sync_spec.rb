@@ -1,9 +1,13 @@
-require_relative '../lib/file_sync.rb'
+# frozen_string_literal: true
 
-RSpec.describe FileSync, "MyConfig#fname" do
-  let(:including_class) { Class.new { include ::FileSync } }
-    it "finds the file on the $HOME" do
-      p including_class.inspect
-      expect(including_class.new.fetch(".vimrc")).to eq ".vimrc is already up to date!"
+require_relative '../lib/file_sync'
+
+RSpec.describe FileSync, '#fname' do
+  let(:including_class) { FileSync::MyConfig.new { include FileSync } }
+  it 'testing existence of a file' do
+    file_names = ['.vimrc', '.zshrc', '.tmux.conf']
+    file_names.flatten.map do |f|
+      expect(File).to exist("#{ENV['HOME']}/#{f}")
+    end
   end
 end
