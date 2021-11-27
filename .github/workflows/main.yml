@@ -3,7 +3,8 @@
 name: RSpec Tests
 
 # Controls when the workflow will run
-on: [push, pull_request]
+on:
+  [push, pull_request]
   # Triggers the workflow on push or pull request events but only for the master branch
 
   # Allows you to run this workflow manually from the Actions tab
@@ -21,8 +22,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
-          ruby-version: '2.5.1'
+          ruby-version: "2.5.1"
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Install Dependencies
+        run: gem install bundler
+      - name: Run Tests
         run: bundle exec rspec
