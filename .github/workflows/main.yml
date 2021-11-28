@@ -32,4 +32,4 @@ jobs:
       # run: bundle exec rspec
 
       - name: Linting
-        run: rubocop
+        run: rubocop -A
