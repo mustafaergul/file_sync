@@ -30,3 +30,6 @@ jobs:
           sudo bundle install
       # - name: Run Tests
       # run: bundle exec rspec
+
+      - name: Linting
+        run: rubocop
