@@ -25,6 +25,8 @@ jobs:
           ruby-version: "2.5.1"
 
       - name: Install Dependencies
-        run: sudo gem install bundler
+        run: |
+          sudo gem install bundler
+          sudo bundle install
       - name: Run Tests
         run: bundle exec rspec
