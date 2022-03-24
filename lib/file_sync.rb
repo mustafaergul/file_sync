@@ -22,6 +22,7 @@ module FileSync
     def fetch
       puts 'Fetching files...'
       @fname.each_with_index { |fname, index| puts "#{index + 1}.file: #{fname}" }
+      puts
     end
 
     def compare
@@ -33,7 +34,6 @@ module FileSync
           sync(file)
         end
       end
-      puts
     end
 
     def sync(file)
