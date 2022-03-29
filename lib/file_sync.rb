@@ -48,5 +48,4 @@ module FileSync
   files = MyConfig.new(files_payload.values.flatten)
   files.fetch
   files.compare
-
 end

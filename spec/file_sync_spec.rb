@@ -16,6 +16,6 @@ RSpec.describe FileSync, '#fname' do
     file_names = ['.vimrc', '.zshrc', '.tmux.conf']
     file_names.flatten.map do |f|
       expect(File).to exist("#{ENV['HOME']}/Projects/dotfiles/#{f}")
+    end
   end
-end
 end
