@@ -1,3 +1,6 @@
+# Config file to be ignored by me
+/config/directories.yml
+
 /.bundle/
 /.yardoc
 /_yardoc/
