@@ -12,22 +12,22 @@ module FileSync
 
   # Class to manage files
   class MyConfig
-    attr_accessor :fname
+    attr_accessor :f_name
 
-    def initialize(fname)
-      @fname = fname
+    def initialize(f_name)
+      @f_name = f_name
       @dot_dir = %(dotfiles/)
     end
 
     def fetch
       puts 'Fetching files...'
-      @fname.each_with_index { |fname, index| puts "#{index + 1}.file: #{fname}" }
+      @f_name.each_with_index { |f_name, index| puts "#{index + 1}.file: #{f_name}" }
       puts
     end
 
     def compare
       puts 'Comparing files....'
-      @fname.each do |file|
+      @f_name.each do |file|
         if FileUtils.identical?("#{ENV['HOME']}/Projects/#{@dot_dir}#{file}", "#{ENV['HOME']}/#{file}")
           puts "#{file} is already up to date!"
         else
