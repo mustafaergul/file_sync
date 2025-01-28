@@ -1,6 +1,8 @@
 filenames:
   - .vimrc
+  - .bashrc
   - .zshrc
+  - .wezterm.lua
   - .config/tmux/
   - .config/nvim/
   - .config/atuin/
