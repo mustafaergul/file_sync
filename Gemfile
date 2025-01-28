@@ -5,5 +5,5 @@ source "https://rubygems.org"
 gem "rake"
 gem "rspec"
 gem "rubocop", require: false
-gem "standardrb"
+gem "standard", ">= 1.35.1"
 gem "yaml"
