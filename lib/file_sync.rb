@@ -1,7 +1,5 @@
-# !/usr/bin/ruby
+#!/usr/bin/env ruby
 # frozen_string_literal: true
-
-# Ruby script that will sync dotfiles configuration
 
 require "fileutils"
 require "yaml"
@@ -16,36 +14,39 @@ module FileSync
 
     def initialize(f_name)
       @f_name = f_name
-      @dot_dir = %(dotfiles/)
+      @dot_dir = File.expand_path("~/Projects/dotfiles/")
     end
 
     def fetch
       puts "Fetching files..."
-      @f_name.each_with_index { |f_name, index| puts "#{index + 1}.file: #{f_name}" }
+      @f_name.each_with_index { |file, index| puts "#{index + 1}. File: #{file}" }
       puts
     end
 
     def compare
-      puts "Comparing files...."
+      puts "Comparing files..."
       @f_name.each do |file|
-        if FileUtils.identical?("#{ENV["HOME"]}/Projects/#{@dot_dir}#{file}", "#{ENV["HOME"]}/#{file}")
-          puts "#{file} is already up to date!"
+        source = File.expand_path("~/#{file}")
+        destination = File.join(@dot_dir, file)
+
+        if File.exist?(source)
+          if File.exist?(destination) && FileUtils.identical?(source, destination)
+            puts "#{file} is already up to date!"
+          else
+            sync(file, source, destination)
+          end
         else
-          sync(file)
+          puts "Source file #{source} does not exist!"
         end
       end
     end
 
-    def sync(file)
-      puts "#{file} is syncing..."
-      `cp ~/#{file} #{ENV["HOME"]}/Projects/#{@dot_dir}`
+    def sync(file, source, destination)
+      puts "Syncing #{file}..."
+      FileUtils.mkdir_p(File.dirname(destination))
+      FileUtils.cp_r(source, destination)
+      puts "#{file} has been synced!"
       puts
     end
   end
-
-  files_payload = YAML.load_file("./config/filenames.yml")
-
-  files = MyConfig.new(files_payload.values.flatten)
-  files.fetch
-  files.compare
 end

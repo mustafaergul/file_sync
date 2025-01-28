@@ -1,4 +1,7 @@
 filenames:
-    - ".vimrc"
-    - ".zshrc"
-    - ".tmux.conf"
+  - .vimrc
+  - .zshrc
+  - .config/tmux/
+  - .config/nvim/
+  - .config/atuin/
+  - .config/aerospace/
