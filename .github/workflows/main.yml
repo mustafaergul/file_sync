@@ -31,5 +31,5 @@ jobs:
       # - name: Run Tests
       # run: bundle exec rspec
 
-      - name: Linting
-        run: rubocop -A
+      - name: Run StandardRB
+        run: bundle exec standardrb
