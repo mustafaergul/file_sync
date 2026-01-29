@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
 require "fileutils"
@@ -14,7 +13,7 @@ module FileSync
 
     def initialize(f_name)
       @f_name = f_name
-      @dot_dir = File.expand_path("~/Projects/dotfiles/")
+      @dot_dir = Dir.pwd
     end
 
     def fetch
@@ -26,14 +25,16 @@ module FileSync
     def compare
       puts "Comparing files..."
       @f_name.each do |file|
-        source = File.expand_path("~/#{file}")
-        destination = File.join(@dot_dir, file)
+        # Strip trailing slashes to handle directories correctly
+        clean_file = file.chomp("/")
+        source = File.expand_path("~/#{clean_file}")
+        destination = File.join(@dot_dir, clean_file)
 
         if File.exist?(source)
-          if File.exist?(destination) && FileUtils.identical?(source, destination)
-            puts "#{file} is already up to date!"
+          if File.exist?(destination) && files_identical?(source, destination)
+            puts "#{clean_file} is already up to date!"
           else
-            sync(file, source, destination)
+            sync(clean_file, source, destination)
           end
         else
           puts "Source file #{source} does not exist!"
@@ -48,5 +49,30 @@ module FileSync
       puts "#{file} has been synced!"
       puts
     end
+
+    private
+
+    def files_identical?(source, destination)
+      return false unless File.exist?(source) && File.exist?(destination)
+
+      if File.directory?(source) && File.directory?(destination)
+        true
+      elsif File.file?(source) && File.file?(destination)
+        FileUtils.identical?(source, destination)
+      else
+        false
+      end
+    end
   end
+end
+
+# Run the sync if this file is executed directly
+if __FILE__ == $0
+  require "yaml"
+
+  config_path = File.expand_path("../../config/filenames.yml", __FILE__)
+  config = YAML.load_file(config_path)
+
+  sync = FileSync::MyConfig.new(config["filenames"])
+  sync.compare
 end

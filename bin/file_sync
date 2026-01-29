@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require_relative '../lib/file_sync'
+require 'yaml'
+
+config_path = File.expand_path('../config/filenames.yml', __dir__)
+config = YAML.load_file(config_path)
+
+sync = FileSync::MyConfig.new(config['filenames'])
+sync.compare
