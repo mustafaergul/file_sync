@@ -3,6 +3,7 @@ filenames:
   - .bashrc
   - .zshrc
   - .wezterm.lua
+  - .gitconfig
   - .config/tmux/
   - .config/nvim/
   - .config/atuin/
